@@ -27,7 +27,10 @@ repoFile=/etc/yum.repos.d/mnt_iso_.repo
 
 if [ -f "$repoFile" ];
 then
-   echo "File $repoFile exist."
+   echo "File $repoFile exist, repo is enabled"
 else
-   echo "File $repoFile does not exist"
+   mkdir -p /mnt/iso
+   mount -o loop CentOS-7-x86_64-DVD-2009.iso /mnt/iso
+   yum-config-manager --add-repo=file:///mnt/iso
+   echo "File $repoFile does not exist, repo created and enabled"
 fi
