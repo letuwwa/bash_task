@@ -21,3 +21,10 @@ fi
 
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 yum update -y --disablerepo=*
+
+if [[ -f "/etc/yum.repos.d/mnt_iso.repo" ]]
+then
+    echo "This file exists on your filesystem."
+else
+    echo "Repo file isn't exist, repo created"
+fi
