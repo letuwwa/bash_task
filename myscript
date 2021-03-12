@@ -20,3 +20,4 @@ fi
 
 
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+yum update -y --disablerepo=*
