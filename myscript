@@ -23,7 +23,7 @@ iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 yum update -y --disablerepo=*
 
 
-repoFile=mnt_iso.repo
+repoFile=/etc/yum.repos.d/mnt_iso_.repo
 
 if [ -f "$repoFile" ];
 then
