@@ -39,3 +39,8 @@ fi
 (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdc
 (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdd
 mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/sd[b-d]
+
+
+pvcreate /dev/md5
+mkfs.ext4 /dev/md5
+mount /dev/md5 /mnt
