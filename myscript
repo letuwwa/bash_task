@@ -34,3 +34,8 @@ else
    yum-config-manager --add-repo=file:///mnt/iso
    echo "File $repoFile does not exist, repo created and enabled"
 fi
+
+(echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdb
+(echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdc
+(echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdd
+mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/sd[b-d]
