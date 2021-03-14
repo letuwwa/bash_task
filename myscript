@@ -4,9 +4,8 @@ function main {
  if grep -q ONBOOT=yes $configFile
   then echo "ONBOOT=yes, config is corect"
  else
+  grep "ONBOOT=no" -P -R -I -l $configFile | xargs sed -i 's/ONBOOT=no/ONBOOT=yes/g'
   echo "ONBOOT setted on YES, config is changed"
-  sed -i '$ d' $configFile
-  echo "ONBOOT=yes" >> $configFile
  fi
 
 
