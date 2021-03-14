@@ -1,0 +1,6 @@
+function Test {
+  echo "Message"
+  ls -lah
+}
+
+Test 2>&1 | tee -a file.log
