@@ -1,5 +1,11 @@
 function Test {
-  echo "Message"
+  echo "Input name of disk 1:"
+  read disk1
+  if lsblk -f | grep -wq $disk1; then
+      echo yes
+   else
+      echo no
+  fi
   ls -lah
 }
 
