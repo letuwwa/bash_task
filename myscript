@@ -1,11 +1,10 @@
 function diskInput {
   read -p "Input name of disk: " value
   if lsblk -f | grep -wq $value; then
-      echo "yes, disk $value is exist"
       (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/$value
-      echo $(($value))
+      echo $value
    else
-      echo no
+      echo Disk doesnt exist
   fi
 }
 
@@ -50,12 +49,12 @@ function main {
  disk1=$(diskInput)
  disk2=$(diskInput)
  disk3=$(diskInput)
+ echo "Input repo name to mount:"
+ read REPO
  mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
-
-
- pvcreate /dev/md5
- mkfs.ext4 /dev/md5
- mount /dev/md5 /mnt
+ pvcreate /dev/$REPO
+ mkfs.ext4 /dev/$REPO
+ mount /dev/$REPO /mnt
 }
 
 main 2>&1 | tee -a file.log
