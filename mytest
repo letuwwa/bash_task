@@ -1,10 +1,9 @@
 function diskInput {
   read -p "Input name of disk: " value
   if lsblk -f | grep -wq $value; then
-      echo "yes, disk $value is exist"
-      echo $(($value))
+      echo $value
    else
-      echo no
+      echo Disk doesnt exist
   fi
 }
 
