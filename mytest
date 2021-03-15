@@ -15,3 +15,5 @@ function diskInput {
 mkdir -p /home/nfs
 chmod -R 777 /home/nfs
 cat /etc/exports
+cat /home/nfs 192.168.10.0/24(rw,sync,no_root_squash,no_all_squash) >> /etc/exports 
+cat /etc/exports
