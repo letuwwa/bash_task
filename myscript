@@ -9,9 +9,7 @@ function diskInput {
 }
 
 function main {
-
  configFile=/etc/sysconfig/network-scripts/ifcfg-enp0s3
-
  if grep -q ONBOOT=yes $configFile
   then echo "ONBOOT=yes, config is corect"
  else
@@ -19,9 +17,7 @@ function main {
   echo "ONBOOT setted on YES, config is changed"
  fi
 
-
  sshdConfig=/etc/ssh/sshd_config
-
  if grep -q 'PermitRootLogin no' $sshdConfig
   then echo 'PermitRootLogin no, config is correct'
  else
@@ -29,13 +25,10 @@ function main {
   grep '#PermitRootLogin yes' -P -R -I -l $sshdConfig | xargs sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g'
  fi
 
-
  iptables -A INPUT -p tcp --dport 22 -j ACCEPT
  yum update -y --disablerepo=*
 
-
  repoFile=/etc/yum.repos.d/mnt_iso_.repo
-
  if [ -f "$repoFile" ];
  then
     echo "File $repoFile exist, repo is enabled"
@@ -51,7 +44,7 @@ function main {
  disk3=$(diskInput)
  echo "Input repo name to mount:"
  read REPO
- mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
+ mdadm --create /dev/$REPO --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
  pvcreate /dev/$REPO
  mkfs.ext4 /dev/$REPO
  mount /dev/$REPO /mnt
