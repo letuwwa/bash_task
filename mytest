@@ -1,19 +1,5 @@
-function diskInput {
-  read -p "Input name of disk: " value
-  if lsblk -f | grep -wq $value; then
-      echo $value
-   else
-      echo Disk doesnt exist
-  fi
-}
-
- disk1=$(diskInput)
- disk2=$(diskInput)
- disk3=$(diskInput)
- echo $disk1 $disk2 $disk3
-
-mkdir -p /home/nfs
-chmod -R 777 /home/nfs
-cat /etc/exports
-echo "192.168.10.0/24(rw,sync,no_root_squash,no_all_squash)" >> /etc/exports 
-cat /etc/exports
+if mdadm --detail --scan --verbose | grep -q /dev/md
+  then echo yes
+ else
+  echo no
+ fi
