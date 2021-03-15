@@ -1,4 +1,16 @@
+function diskInput {
+  read -p "Input name of disk: " value
+  if lsblk -f | grep -wq $value; then
+      echo "yes, disk $value is exist"
+      (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/$value
+      echo $(($value))
+   else
+      echo no
+  fi
+}
+
 function main {
+
  configFile=/etc/sysconfig/network-scripts/ifcfg-enp0s3
 
  if grep -q ONBOOT=yes $configFile
@@ -34,11 +46,11 @@ function main {
     yum-config-manager --add-repo=file:///mnt/iso
     echo "File $repoFile does not exist, repo created and enabled"
  fi
-
- (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdb
- (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdc
- (echo n; echo p; echo 1; echo ; echo ; echo t; echo fd; echo w) | fdisk /dev/sdd
- mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/sd[b-d]
+ 
+ disk1=$(diskInput)
+ disk2=$(diskInput)
+ disk3=$(diskInput)
+ mdadm --create /dev/md5 --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
 
 
  pvcreate /dev/md5
