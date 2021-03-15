@@ -7,7 +7,7 @@ function Test {
   fi
 }
 
-for (( i=0; i < 3; i++ ))
-do
-  Test
-done 
+ disk1=$(diskInput)
+ disk2=$(diskInput)
+ disk3=$(diskInput)
+ echo $disk1 $disk2 $disk3
