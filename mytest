@@ -1,12 +1,13 @@
 function Test {
-  echo "Input name of disk 1:"
-  read disk1
-  if lsblk -f | grep -wq $disk1; then
-      echo yes
+  read -p "Input name of disk: " value
+  if lsblk -f | grep -wq $value; then
+      echo "yes, disk $value is exist"
    else
       echo no
   fi
-  ls -lah
 }
 
-Test 2>&1 | tee -a file.log
+for (( i=0; i < 3; i++ ))
+do
+  Test
+done 
