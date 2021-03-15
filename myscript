@@ -39,15 +39,44 @@ function main {
     echo "File $repoFile does not exist, repo created and enabled"
  fi
  
- disk1=$(diskInput)
- disk2=$(diskInput)
- disk3=$(diskInput)
  echo "Input repo name to mount:"
  read REPO
- mdadm --create /dev/$REPO --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
- pvcreate /dev/$REPO
- mkfs.ext4 /dev/$REPO
- mount /dev/$REPO /mnt
+ if mdadm --detail --scan --verbose | grep -q /dev/$REPO
+ then
+     echo $REPO alredy exist!
+ else
+     disk1=$(diskInput)
+     disk2=$(diskInput)
+     disk3=$(diskInput)
+     mdadm --create /dev/$REPO --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
+     pvcreate /dev/$REPO
+     mkfs.ext4 /dev/$REPO
+     mount /dev/$REPO /mnt
+ fi
+ 
+ systemctl enable rpcbind
+ systemctl enable nfs-server
+ systemctl enable nfs-lock
+ systemctl enable nfs-idmap
+ systemctl start rpcbind
+ systemctl start nfs-server
+ systemctl start nfs-lock
+ systemctl start nfs-idmap
+ r -p /home/nfs
+ chmod -R 777 /home/nfs
+ echo "192.168.56.1(rw,sync,no_root_squash,no_all_squash)" >> /etc/exports 
+ systemctl restart nfs-server
+ firewall-cmd –permanent –add-port=111/tcp
+ firewall-cmd –permanent –add-port=54302/tcp
+ firewall-cmd –permanent –add-port=20048/tcp
+ firewall-cmd –permanent –add-port=2049/tcp
+ firewall-cmd –permanent –add-port=46666/tcp
+ firewall-cmd –permanent –add-port=42955/tcp
+ firewall-cmd –permanent –add-port=875/tcp
+ firewall-cmd –permanent –zone=public –add-service=nfs
+ firewall-cmd –permanent –zone=public –add-service=mountd
+ firewall-cmd –permanent –zone=public –add-service=rpc-bind
+ firewall-cmd –reload
 }
 
 main 2>&1 | tee -a file.log
