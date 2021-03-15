@@ -11,3 +11,7 @@ function diskInput {
  disk2=$(diskInput)
  disk3=$(diskInput)
  echo $disk1 $disk2 $disk3
+
+mkdir -p /home/nfs
+chmod -R 777 /home/nfs
+cat /etc/exports
