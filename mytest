@@ -1,5 +1,2 @@
-if mdadm --detail --scan --verbose | grep -q /dev/md
-  then echo yes
- else
-  echo no
- fi
+echo "step1" | tee -a logfile.txt
+echo "step2" &> logfile.txt
