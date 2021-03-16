@@ -39,19 +39,19 @@ function main {
     echo "File $repoFile does not exist, repo created and enabled"
  fi
  
- echo "Input repo name to mount:"
- read REPO
- if mdadm --detail --scan --verbose | grep -q /dev/$REPO
+ echo "Input mount point name to mount:"
+ read mountPoint
+ if mdadm --detail --scan --verbose | grep -q /dev/$mountPoint
  then
-     echo $REPO alredy exist!
+     echo $mountPoint alredy exist!
  else
      disk1=$(diskInput)
      disk2=$(diskInput)
      disk3=$(diskInput)
-     mdadm --create /dev/$REPO --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
-     pvcreate /dev/$REPO
-     mkfs.ext4 /dev/$REPO
-     mount /dev/$REPO /mnt
+     mdadm --create /dev/$mountPoint --level=5 --raid-devices=3 /dev/$disk1 /dev/$disk2 /dev/$disk3
+     pvcreate /dev/$mountPoint
+     mkfs.ext4 /dev/$mountPoint
+     mount /dev/$mountPoint /mnt
  fi
  
  systemctl enable rpcbind
